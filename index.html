@@ -474,7 +474,7 @@ button.pill{font-family:var(--serif)}
 
   <!-- message -->
   <section class="sec s-msg reveal">
-    <svg class="msg-sp" viewBox="0 0 60 90" aria-hidden="true"><use href="#sprig"/></svg>
+    <img src="assets/illustrations/kneel.png" alt="Kneel" style="width:min(40vw,160px);height:auto;margin-bottom:28px;object-fit:contain">
     <p class="msg">Some people take a lifetime to find each other. We found each other early. On 2nd July we begin the rest of our story, and we’d love you to be there.</p>
     <div class="msg-end" aria-hidden="true"></div>
   </section>
@@ -504,7 +504,7 @@ button.pill{font-family:var(--serif)}
 
   <!-- countdown -->
   <section class="sec s-count reveal">
-    <svg class="cd-sp" viewBox="0 0 60 90" aria-hidden="true"><use href="#sprig"/></svg>
+    <img src="assets/illustrations/hourglass.png" alt="Time" style="width:min(35vw,140px);height:auto;margin-bottom:28px;object-fit:contain">
     <div class="cd" id="cd">
       <div class="u"><span class="n" id="cd-d">--</span><span class="lbl">Days</span></div>
       <div class="u"><span class="n" id="cd-h">--</span><span class="lbl">Hours</span></div>
@@ -537,12 +537,7 @@ button.pill{font-family:var(--serif)}
   <!-- location -->
   <section class="sec s-loc reveal">
     <h2 class="h script">Location</h2>
-    <svg class="bq draw" viewBox="0 0 140 150" aria-hidden="true">
-      <path class="ln" pathLength="1" d="M70 116 C64 90 46 64 42 42"/><path class="ln" pathLength="1" d="M70 116 C70 84 70 56 70 30"/><path class="ln" pathLength="1" d="M70 116 C78 90 96 64 100 44"/><path class="ln" pathLength="1" d="M70 116 C60 96 56 82 54 62"/><path class="ln" pathLength="1" d="M70 116 C82 96 88 82 90 64"/>
-      <path class="ln" pathLength="1" d="M70 108 C52 104 40 92 30 96 C40 108 56 112 70 112"/><path class="ln" pathLength="1" d="M70 108 C88 104 100 92 110 96 C100 108 84 112 70 112"/>
-      <path class="ln r" pathLength="1" d="M70 116 C62 124 54 136 58 142 C64 138 68 128 70 120 C72 128 76 138 82 142 C86 136 78 124 70 116Z"/>
-      <g class="fade-late"><use href="#fl" x="24" y="24" width="36" height="36"/><use href="#fl" x="52" y="8" width="38" height="38"/><use href="#fl" x="82" y="26" width="36" height="36"/><use href="#fl" x="38" y="46" width="28" height="28"/><use href="#fl" x="76" y="48" width="28" height="28"/></g>
-    </svg>
+    <img src="assets/illustrations/raddison.png" alt="Radisson Blu" style="width:min(70vw,280px);height:auto;margin-bottom:20px;object-fit:contain">
     <p class="venue">Radisson Blu</p>
     <p class="city">Alexandria, Egypt</p>
     <a class="linkbtn" href="https://share.google/svM3ocD2Ax9mpFEXs" target="_blank" rel="noopener">View location →</a>
@@ -679,12 +674,13 @@ if(guest){
 
 /* ---------- audio (Web Audio, no files) ---------- */
 const Snd = (()=>{
-  let ctx, master, bus, fxIn, noiseBuf, silent, unlocked=false, muted=false, timer=null, music=false, chordIdx=0, nextChord=0, nextPluck=0;
+  let ctx, master, bus, fxIn, noiseBuf, silent, unlocked=false, muted=false, timer=null, music=false, chordIdx=0, nextChord=0, nextPluck=0, nextBass=0;
+  // Upbeat, cheerful wedding chords - C major, G major, Am, F major
   const chords = [
-    {pad:[48,55,64], pool:[72,74,76,79,83]},
-    {pad:[45,55,64], pool:[69,72,76,79,81]},
-    {pad:[41,52,60], pool:[69,72,76,77,81]},
-    {pad:[43,50,59], pool:[67,71,74,76,79,83]}
+    {pad:[60,64,67], pool:[72,76,79,84], bass:48},  // C major - happy!
+    {pad:[67,71,74], pool:[79,83,86,91], bass:55},  // G major - bright
+    {pad:[69,72,76], pool:[81,84,88,93], bass:57},  // A minor - sweet
+    {pad:[65,69,72], pool:[77,81,84,89], bass:53}   // F major - warm
   ];
   const mtof = n => 440*Math.pow(2,(n-69)/12);
   function silentWav(){
@@ -702,11 +698,11 @@ const Snd = (()=>{
     try{
       const AC = window.AudioContext||window.webkitAudioContext; if(!AC) return;
       ctx = new AC(); master = ctx.createGain(); master.gain.value = muted?0:1; master.connect(ctx.destination);
-      bus = ctx.createGain(); bus.gain.value = .8; bus.connect(master);
-      const d = ctx.createDelay(1); d.delayTime.value=.42; const fb=ctx.createGain(); fb.gain.value=.38;
-      const lp = ctx.createBiquadFilter(); lp.type='lowpass'; lp.frequency.value=2200;
+      bus = ctx.createGain(); bus.gain.value = .75; bus.connect(master);
+      const d = ctx.createDelay(1); d.delayTime.value=.35; const fb=ctx.createGain(); fb.gain.value=.32;
+      const lp = ctx.createBiquadFilter(); lp.type='lowpass'; lp.frequency.value=3000;
       fxIn = ctx.createGain(); fxIn.connect(d); d.connect(lp); lp.connect(fb); fb.connect(d);
-      const wet = ctx.createGain(); wet.gain.value=.45; lp.connect(wet); wet.connect(master);
+      const wet = ctx.createGain(); wet.gain.value=.4; lp.connect(wet); wet.connect(master);
       noiseBuf = ctx.createBuffer(1, ctx.sampleRate, ctx.sampleRate);
       const ch = noiseBuf.getChannelData(0); for(let i=0;i<ch.length;i++) ch[i]=Math.random()*2-1;
       ctx.resume();
@@ -720,19 +716,33 @@ const Snd = (()=>{
   }
   function pad(ch){
     const t=ctx.currentTime;
-    ch.pad.forEach(n=>{ [-4,4].forEach(dt=>{
-      const o=ctx.createOscillator(), g=ctx.createGain(); o.type='sine'; o.frequency.value=mtof(n); o.detune.value=dt;
-      g.gain.setValueAtTime(0.0001,t); g.gain.linearRampToValueAtTime(.03,t+3.5); g.gain.linearRampToValueAtTime(.03,t+7); g.gain.linearRampToValueAtTime(0.0001,t+13);
-      o.connect(g); g.connect(bus); o.start(t); o.stop(t+13.2);
+    ch.pad.forEach(n=>{ [-3,3].forEach(dt=>{
+      const o=ctx.createOscillator(), g=ctx.createGain(); o.type='triangle'; o.frequency.value=mtof(n); o.detune.value=dt;
+      g.gain.setValueAtTime(0.0001,t); g.gain.linearRampToValueAtTime(.035,t+1.8); g.gain.linearRampToValueAtTime(.035,t+4); g.gain.linearRampToValueAtTime(0.0001,t+6.5);
+      o.connect(g); g.connect(bus); o.start(t); o.stop(t+6.8);
     });});
+  }
+  function bass(ch){
+    const t=ctx.currentTime, f=mtof(ch.bass);
+    tone(f,t,.08,.01,1.2,'triangle',false);
+    tone(f,t+1.5,.08,.01,1.2,'triangle',false);
   }
   function pluck(ch){
     const n=ch.pool[Math.floor(Math.random()*ch.pool.length)], f=mtof(n), t=ctx.currentTime+.02;
-    tone(f,t,.05,.01,2.6,'sine'); tone(f*2,t,.014,.01,1.2,'sine');
+    tone(f,t,.06,.005,1.8,'sine'); tone(f*2,t,.018,.005,.9,'sine');
+  }
+  function arpeggio(ch){
+    const t=ctx.currentTime;
+    ch.pool.slice(0,4).forEach((n,i)=>{
+      const f=mtof(n);
+      tone(f,t+i*.15,.04,.005,1.2,'sine');
+    });
   }
   function tick(){
     if(!ctx||ctx.state!=='running'||muted||!music) return;
     const t=ctx.currentTime;
+    if(t>=nextChord){ pad(chords[chordIdx%4]); chordIdx++; nextChord=t+10; }
+    if(t>=nextPluck){ if(Math.random()>.15) pluck(chords[(chordIdx-1+4)%4]); nextPluck=t+1.3+Math.random()*1.8; }
     if(t>=nextChord){ pad(chords[chordIdx%4]); chordIdx++; nextChord=t+10; }
     if(t>=nextPluck){ if(Math.random()>.15) pluck(chords[(chordIdx-1+4)%4]); nextPluck=t+1.3+Math.random()*1.8; }
   }
