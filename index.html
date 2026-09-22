@@ -56,9 +56,12 @@ button{font:inherit;color:inherit;background:none;border:0;cursor:pointer}
 #intro{background:var(--ivory);transition:opacity 1.3s ease}
 #intro.fade{opacity:0;pointer-events:none}
 #intro svg{width:min(62vw,260px);height:auto;overflow:visible}
-.ring{fill:none;stroke:var(--rose);stroke-width:1.5;stroke-linecap:round;stroke-dasharray:1;stroke-dashoffset:1.02}
+.ring{fill:none;stroke:#D4AF37;stroke-width:2.5;stroke-linecap:round;stroke-dasharray:1;stroke-dashoffset:1.02;filter:drop-shadow(0 2px 4px rgba(212,175,55,.3))}
+.ring-diamond{fill:#D4AF37;opacity:0}
 .intro-go .ringA .ring{animation:draw 1.5s var(--ease) .2s forwards}
 .intro-go .ringB .ring{animation:draw 1.5s var(--ease) .45s forwards}
+.intro-go .ring-diamond{animation:sparkle 1.5s ease .8s forwards}
+@keyframes sparkle{0%{opacity:0;transform:scale(0)}50%{opacity:1;transform:scale(1.3)}100%{opacity:1;transform:scale(1)}}
 .ringA{transform:translateX(-46px)} .ringB{transform:translateX(46px)}
 .intro-go .ringA{animation:joinA 1.1s var(--ease) 1.4s forwards}
 .intro-go .ringB{animation:joinB 1.1s var(--ease) 1.4s forwards}
@@ -67,6 +70,9 @@ button{font:inherit;color:inherit;background:none;border:0;cursor:pointer}
 .iflower{transform-origin:150px 100px;transform:scale(0) rotate(-40deg)}
 .intro-go .iflower{animation:bloom 1.1s var(--ease) 2.1s forwards}
 @keyframes bloom{to{transform:scale(1) rotate(0)}}
+.intro-couple{opacity:0;transform:translateY(20px)}
+.intro-go .intro-couple{animation:fadeUp 1.2s ease .5s forwards}
+@keyframes fadeUp{to{opacity:1;transform:translateY(0)}}
 .intro-name{margin-top:18px;min-height:1.4em;font-size:clamp(38px,11vw,54px);line-height:1.3;color:var(--ink);text-align:center;max-width:90vw}
 .intro-name .wr{--wd:1.8s;--wdelay:0s}
 #intro.intro-go .intro-name .wr{clip-path:inset(-30% -8% -30% 0);-webkit-clip-path:inset(-30% -8% -30% 0);transition:clip-path 1.8s cubic-bezier(.55,.05,.35,1) 2.5s,-webkit-clip-path 1.8s cubic-bezier(.55,.05,.35,1) 2.5s}
@@ -75,6 +81,10 @@ button{font:inherit;color:inherit;background:none;border:0;cursor:pointer}
 #env-stage{background:var(--ivory);opacity:0;visibility:hidden;transition:opacity 1.6s ease,visibility 0s linear 1.6s;overflow:hidden}
 #env-stage.show{opacity:1;visibility:visible;transition-delay:0s}
 #env-stage.out{opacity:0;visibility:visible;pointer-events:none;transition:opacity 2s ease}
+.env-couple-icon{position:absolute;bottom:20%;left:50%;transform:translateX(-50%);opacity:0;transition:opacity 1.6s ease 1.2s}
+#env-stage.show .env-couple-icon{opacity:1}
+.env.opening .env-couple-icon{animation:celebrate 1.2s ease forwards}
+@keyframes celebrate{0%{transform:translateX(-50%) scale(1) rotate(0deg)}20%{transform:translateX(-50%) scale(1.15) rotate(-5deg)}40%{transform:translateX(-50%) scale(1.15) rotate(5deg)}60%{transform:translateX(-50%) scale(1.15) rotate(-3deg)}80%{transform:translateX(-50%) scale(1.15) rotate(3deg)}100%{transform:translateX(-50%) scale(1.2) rotate(0deg)}}
 .env-deco{position:absolute;pointer-events:none;opacity:0;transition:opacity 3s ease 1s}
 #env-stage.show .env-deco{opacity:.9}
 .env-deco svg{display:block;width:100%;height:auto;transform-origin:0 0;animation:sway 11s ease-in-out infinite}
@@ -332,20 +342,71 @@ button.pill{font-family:var(--serif)}
     </symbol>
     <symbol id="seal" viewBox="0 0 60 60">
       <path d="M30 2.5c5 0 8 3.6 12.5 5.2s9.6 2.4 11 7.6-2.4 8.6-2.6 13.4 3.6 8.6.6 13-8.2 3.6-12.2 6.6-7 6.6-12.6 5-8.4-4.6-12.6-7.4-9.6-3.6-10.4-9 3-9 2-13.8-3.8-8-.6-12.6 8.4-3.8 12.6-6.2S24.6 2.5 30 2.5Z" fill="url(#waxg)"/>
-      <circle cx="30" cy="30" r="17" fill="none" stroke="#B98A86" stroke-width=".9" opacity=".8"/>
-      <g stroke="#B58884" stroke-width="1" fill="rgba(255,255,255,.14)">
+      <circle cx="30" cy="30" r="17" fill="none" stroke="#D4AF37" stroke-width=".9" opacity=".8"/>
+      <g stroke="#D4AF37" stroke-width="1" fill="rgba(255,215,0,.14)">
         <ellipse cx="30" cy="22.5" rx="3.2" ry="6"/><ellipse cx="30" cy="22.5" rx="3.2" ry="6" transform="rotate(72 30 30)"/><ellipse cx="30" cy="22.5" rx="3.2" ry="6" transform="rotate(144 30 30)"/><ellipse cx="30" cy="22.5" rx="3.2" ry="6" transform="rotate(216 30 30)"/><ellipse cx="30" cy="22.5" rx="3.2" ry="6" transform="rotate(288 30 30)"/>
       </g>
     </symbol>
   </defs>
 </svg>
 
-<!-- LOADING SCREEN (no words: rings + guest name) -->
+<!-- LOADING SCREEN (wedding rings + couple) -->
 <div id="intro" class="stage" aria-hidden="true">
-  <svg viewBox="0 0 300 200" role="presentation">
-    <g class="ringA"><path class="ring" pathLength="1" d="M174 100 a46 45 0 1 1 -92 0 a46 45 0 1 1 92 0"/></g>
-    <g class="ringB"><path class="ring" pathLength="1" d="M218 100 a46 45 0 1 1 -92 0 a46 45 0 1 1 92 0"/></g>
-    <g class="iflower"><use href="#fl" x="132" y="82" width="36" height="36"/></g>
+  <svg viewBox="0 0 300 240" role="presentation">
+    <!-- Wedding Rings with Diamond -->
+    <defs>
+      <radialGradient id="goldGradient" cx="50%" cy="50%">
+        <stop offset="0%" style="stop-color:#FFD700;stop-opacity:1" />
+        <stop offset="50%" style="stop-color:#D4AF37;stop-opacity:1" />
+        <stop offset="100%" style="stop-color:#B8860B;stop-opacity:1" />
+      </radialGradient>
+    </defs>
+    <g class="ringA">
+      <path class="ring" pathLength="1" d="M174 80 a46 45 0 1 1 -92 0 a46 45 0 1 1 92 0" stroke="url(#goldGradient)"/>
+      <circle class="ring-diamond" cx="128" cy="45" r="4"/>
+    </g>
+    <g class="ringB">
+      <path class="ring" pathLength="1" d="M218 80 a46 45 0 1 1 -92 0 a46 45 0 1 1 92 0" stroke="url(#goldGradient)"/>
+      <circle class="ring-diamond" cx="172" cy="45" r="4"/>
+    </g>
+    <g class="iflower"><use href="#fl" x="132" y="62" width="36" height="36"/></g>
+    
+    <!-- Hugging Couple (same as in invitation) -->
+    <g class="intro-couple" transform="translate(100, 130) scale(0.35)">
+      <defs>
+        <linearGradient id="fg2" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#fff"/><stop offset=".74" stop-color="#fff"/><stop offset=".97" stop-color="#000"/></linearGradient>
+      </defs>
+      <!-- groom hair peek -->
+      <ellipse cx="104" cy="44" rx="34" ry="24" fill="#4B3D36"/>
+      <!-- groom neck + torso -->
+      <rect x="94" y="116" width="20" height="30" fill="#E6C2A7"/>
+      <path d="M50 312 L52 184 Q54 148 88 141 L120 141 Q154 148 158 184 L160 312 Z" fill="#B49B88" stroke="#8F7767" stroke-width="1"/>
+      <path d="M88 141 L104 198 L120 141 Z" fill="#FFFDFC" stroke="#DCCFC4" stroke-width=".8"/>
+      <path d="M88 141 L99 206 L79 182 Z M120 141 L109 206 L129 182 Z" fill="#A08672" stroke="#8F7767" stroke-width=".8"/>
+      <path d="M94 143 L104 149 L94 156 Z M114 143 L104 149 L114 156 Z" fill="#5B4F4A"/><circle cx="104" cy="149" r="3.4" fill="#5B4F4A"/>
+      <circle cx="104" cy="226" r="1.9" fill="#8F7767"/><circle cx="104" cy="250" r="1.9" fill="#8F7767"/>
+      <path d="M66 236 h16" stroke="#8F7767" stroke-width="1" stroke-linecap="round"/>
+      <!-- groom arm around her -->
+      <path d="M150 174 Q196 200 250 224" fill="none" stroke="#B49B88" stroke-width="20" stroke-linecap="round"/>
+      <!-- bride back hair -->
+      <ellipse cx="200" cy="50" rx="38" ry="24" fill="#7B5D4F"/>
+      <path d="M164 62 C150 92 172 112 160 142 C152 166 174 178 164 206" fill="none" stroke="#7B5D4F" stroke-width="17" stroke-linecap="round"/>
+      <path d="M238 66 C252 96 232 116 244 146 C252 168 232 180 240 206" fill="none" stroke="#7B5D4F" stroke-width="17" stroke-linecap="round"/>
+      <!-- bride neck, bodice, skirt -->
+      <rect x="190" y="118" width="20" height="34" fill="#EBC9AF"/>
+      <path d="M158 168 Q166 148 190 143 L210 143 Q234 148 242 168 L246 214 L154 214 Z" fill="#FFFDFC" stroke="#DCCFC4" stroke-width="1"/>
+      <path d="M190 143 L200 170 L210 143 Z" fill="#EBC9AF"/>
+      <path d="M154 212 L246 212 L272 312 L128 312 Z" fill="#FFFDFC" stroke="#DCCFC4" stroke-width="1"/>
+      <path d="M178 216 L164 310 M200 216 L200 310 M222 216 L236 310" fill="none" stroke="#E6DBD2" stroke-width="1"/>
+      <path d="M154 212 Q200 224 246 212" fill="none" stroke="#D4AF37" stroke-width="1" opacity=".75"/>
+      <!-- groom hand on her waist -->
+      <path d="M244 220 L251 223" stroke="#8F7767" stroke-width="17" stroke-linecap="round"/><path d="M244 220 L251 223" stroke="#B49B88" stroke-width="15" stroke-linecap="round"/>
+      <circle cx="258" cy="226" r="7.5" fill="#E6C2A7" stroke="#C9A58C" stroke-width=".7"/>
+      <!-- bride arm around his waist -->
+      <path d="M166 170 Q142 198 132 218" fill="none" stroke="#DCCFC4" stroke-width="14" stroke-linecap="round"/>
+      <path d="M166 170 Q142 198 132 218" fill="none" stroke="#FFFDFC" stroke-width="12" stroke-linecap="round"/>
+      <path d="M133 217 L127 227" stroke="#EBC9AF" stroke-width="8" stroke-linecap="round"/><circle cx="124" cy="232" r="6.5" fill="#EBC9AF" stroke="#D2AC91" stroke-width=".7"/>
+    </g>
   </svg>
   <div class="intro-name script"><span class="wr" data-guest dir="auto" hidden></span></div>
 </div>
@@ -366,6 +427,33 @@ button.pill{font-family:var(--serif)}
       <use href="#lf" x="42" y="236" width="12" height="26" transform="rotate(-20 48 249)"/>
       <use href="#fl" x="26" y="232" width="30" height="30"/>
     </svg>
+    
+    <!-- Couple on envelope (same style) -->
+    <div class="env-couple-icon">
+      <svg width="140" height="140" viewBox="0 0 300 310">
+        <g transform="scale(0.45)">
+          <ellipse cx="104" cy="44" rx="34" ry="24" fill="#4B3D36"/>
+          <rect x="94" y="116" width="20" height="30" fill="#E6C2A7"/>
+          <path d="M50 312 L52 184 Q54 148 88 141 L120 141 Q154 148 158 184 L160 312 Z" fill="#B49B88" stroke="#8F7767" stroke-width="1"/>
+          <path d="M88 141 L104 198 L120 141 Z" fill="#FFFDFC" stroke="#DCCFC4" stroke-width=".8"/>
+          <path d="M94 143 L104 149 L94 156 Z M114 143 L104 149 L114 156 Z" fill="#5B4F4A"/><circle cx="104" cy="149" r="3.4" fill="#5B4F4A"/>
+          <path d="M150 174 Q196 200 250 224" fill="none" stroke="#B49B88" stroke-width="20" stroke-linecap="round"/>
+          <ellipse cx="200" cy="50" rx="38" ry="24" fill="#7B5D4F"/>
+          <path d="M164 62 C150 92 172 112 160 142" fill="none" stroke="#7B5D4F" stroke-width="17" stroke-linecap="round"/>
+          <path d="M238 66 C252 96 232 116 244 146" fill="none" stroke="#7B5D4F" stroke-width="17" stroke-linecap="round"/>
+          <rect x="190" y="118" width="20" height="34" fill="#EBC9AF"/>
+          <path d="M158 168 Q166 148 190 143 L210 143 Q234 148 242 168 L246 214 L154 214 Z" fill="#FFFDFC" stroke="#DCCFC4" stroke-width="1"/>
+          <path d="M190 143 L200 170 L210 143 Z" fill="#EBC9AF"/>
+          <path d="M154 212 L246 212 L272 312 L128 312 Z" fill="#FFFDFC" stroke="#DCCFC4" stroke-width="1"/>
+          <path d="M154 212 Q200 224 246 212" fill="none" stroke="#D4AF37" stroke-width="1" opacity=".75"/>
+          <path d="M244 220 L251 223" stroke="#B49B88" stroke-width="15" stroke-linecap="round"/>
+          <circle cx="258" cy="226" r="7.5" fill="#E6C2A7"/>
+          <path d="M166 170 Q142 198 132 218" fill="none" stroke="#FFFDFC" stroke-width="12" stroke-linecap="round"/>
+          <circle cx="124" cy="232" r="6.5" fill="#EBC9AF"/>
+        </g>
+      </svg>
+    </div>
+    
     <div class="addr"><span class="script" id="envName" dir="auto"></span></div>
     <svg class="flap" viewBox="0 0 420 172" aria-hidden="true" preserveAspectRatio="none">
       <path class="fp" d="M0 0 H420 L210 172Z" fill="#F4EAE0" stroke="rgba(91,79,74,.16)" stroke-width="1"/>
@@ -902,31 +990,41 @@ function smoothScrollTo(element, callback) {
   if (!autoScrollEnabled || !element) return;
   
   isAutoScrolling = true;
-  element.scrollIntoView({ behavior: 'smooth', block: 'center' });
   
-  // Wait for scroll to complete
+  // Slower scroll on mobile
+  const isMobile = window.innerWidth < 768;
+  const behavior = isMobile ? 'smooth' : 'smooth';
+  
+  element.scrollIntoView({ behavior, block: 'center' });
+  
+  // Wait longer for scroll to complete on mobile
   setTimeout(() => {
     isAutoScrolling = false;
     if (callback) callback();
-  }, 1000);
+  }, isMobile ? 2000 : 1500);
 }
 
 function startAutoScroll() {
-  // Wait 3 seconds after letter opens, then scroll to scratch
+  // Longer wait times, especially on mobile
+  const isMobile = window.innerWidth < 768;
+  const firstDelay = isMobile ? 6000 : 5000; // 6 sec mobile, 5 sec desktop
+  const secondDelay = isMobile ? 5000 : 4000; // 5 sec mobile, 4 sec desktop
+  
+  // Wait before first scroll to scratch
   autoScrollTimeout = setTimeout(() => {
     if (!autoScrollEnabled) return;
     
     const scratchSection = $('#scratch');
     smoothScrollTo(scratchSection, () => {
-      // Wait 2 seconds at scratch, then scroll to RSVP form
+      // Wait at scratch, then scroll to RSVP form
       autoScrollTimeout = setTimeout(() => {
         if (!autoScrollEnabled) return;
         
         const rsvpSection = $('.s-rsvp');
         smoothScrollTo(rsvpSection);
-      }, 2000);
+      }, secondDelay);
     });
-  }, 3000);
+  }, firstDelay);
 }
 
 // Detect user scrolling to stop auto-scroll
@@ -938,7 +1036,7 @@ window.addEventListener('scroll', () => {
   clearTimeout(scrollTimeout);
   scrollTimeout = setTimeout(() => {
     disableAutoScroll();
-  }, 100);
+  }, 150);
 }, { passive: true });
 
 // Detect user touch/wheel to stop auto-scroll immediately
