@@ -1,0 +1,67 @@
+==================================================================
+SIMPLE GOOGLE SHEETS RSVP SETUP - 5 MINUTES
+==================================================================
+
+STEP 1: CREATE GOOGLE SHEET
+----------------------------
+1. Go to: https://sheets.google.com/
+2. Create new sheet
+3. In Row 1, add these headers:
+   A1: Name
+   B1: Response  
+   C1: Message
+
+STEP 2: CREATE SCRIPT
+---------------------
+1. In your sheet, click: Extensions → Apps Script
+2. Delete everything
+3. Paste this code:
+
+function doPost(e) {
+  const sheet = SpreadsheetApp.getActiveSpreadsheet().getActiveSheet();
+  const name = e.parameter.name || '';
+  const attendance = e.parameter.attendance || '';
+  const note = e.parameter.note || '';
+  
+  sheet.appendRow([name, attendance, note]);
+  
+  return ContentService.createTextOutput('OK');
+}
+
+4. Click Save (disk icon)
+
+STEP 3: DEPLOY
+--------------
+1. Click: Deploy → New deployment
+2. Click gear icon → Choose "Web app"
+3. Set "Execute as" = Me
+4. Set "Who has access" = Anyone
+5. Click Deploy
+6. Click Authorize → Choose your account → Allow
+7. COPY THE URL (looks like: https://script.google.com/macros/s/ABC123.../exec)
+
+STEP 4: UPDATE YOUR WEBSITE
+----------------------------
+1. Open: index.html
+2. Find line 630 (search for: FORM_ENDPOINT)
+3. Replace with your URL:
+   const FORM_ENDPOINT = 'https://script.google.com/macros/s/ABC123.../exec';
+4. Save
+
+STEP 5: DEPLOY TO VERCEL
+-------------------------
+vercel --prod
+
+DONE! 
+When someone RSVPs, it goes straight to your Google Sheet!
+
+Your sheet will look like:
+Name           | Response              | Message
+Ahmed Mohamed  | Yes, with joy         | So excited!
+Sarah Ali      | Sadly, I can't...     | Will miss you
+
+To see totals:
+- Coming: =COUNTIF(B:B,"Yes, with joy")
+- Not coming: =COUNTIF(B:B,"Sadly, I can't make it")
+
+==================================================================
