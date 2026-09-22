@@ -783,7 +783,7 @@ function petals(n){
 const intro=$('#intro'), envStage=$('#env-stage'), sndBtn=$('#sound');
 $$('.draw path,.draw circle,.draw ellipse').forEach(e=>e.setAttribute('pathLength','1'));
 requestAnimationFrame(()=>requestAnimationFrame(()=>intro.classList.add('intro-go')));
-const minWait = new Promise(r=>setTimeout(r, RM?1200:4700));
+const minWait = new Promise(r=>setTimeout(r, RM?800:2000));
 const fontsReady = Promise.race([ (document.fonts&&document.fonts.ready)||Promise.resolve(), new Promise(r=>setTimeout(r,3500)) ]);
 const photoReady = new Promise(r=>{ const im=$('.photo img'); if(im.complete) r(); else { im.onload=im.onerror=()=>r(); setTimeout(r,4000); } });
 Promise.all([minWait,fontsReady,photoReady]).then(()=>{
