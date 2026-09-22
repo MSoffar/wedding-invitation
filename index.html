@@ -66,8 +66,8 @@ button{font:inherit;color:inherit;background:none;border:0;cursor:pointer}
 #env-stage.show{opacity:1;visibility:visible;transition-delay:0s}
 #env-stage.out{opacity:0;visibility:visible;pointer-events:none;transition:opacity 2s ease}
 .env-couple-left,.env-couple-right{position:absolute;width:min(35vw,160px);height:auto;transition:all 1.2s cubic-bezier(0.4, 0, 0.2, 1);opacity:0}
-.env-couple-left{left:12%;bottom:22%;transform:translateX(-10px)}
-.env-couple-right{right:12%;bottom:22%;transform:translateX(10px)}
+.env-couple-left{left:12%;bottom:12%;transform:translateX(-10px)}
+.env-couple-right{right:12%;bottom:12%;transform:translateX(10px)}
 #env-stage.show .env-couple-left,#env-stage.show .env-couple-right{opacity:1;transform:translateX(0)}
 .env.opening .env-couple-left{animation:slideIn 1.2s cubic-bezier(0.4, 0, 0.2, 1) .5s forwards}
 .env.opening .env-couple-right{animation:slideInRight 1.2s cubic-bezier(0.4, 0, 0.2, 1) .5s forwards}
@@ -551,12 +551,7 @@ button.pill{font-family:var(--serif)}
   <!-- dress code -->
   <section class="sec s-dress reveal">
     <h2 class="h script">Dress code</h2>
-    <svg class="candle draw" viewBox="0 0 80 130" aria-hidden="true">
-      <path class="ln k" pathLength="1" d="M28 52 V112 Q28 117 33 117 H47 Q52 117 52 112 V52 Z"/><path class="ln k" pathLength="1" d="M28 60 Q34 66 34 58 M46 58 Q50 70 52 62"/>
-      <path class="ln k" pathLength="1" d="M40 52 V44"/><path class="ln k" pathLength="1" d="M16 119 Q40 132 64 119"/>
-      <path class="ln r" pathLength="1" d="M8 122 C14 110 24 118 30 124"/><path class="ln r" pathLength="1" d="M72 122 C66 110 56 118 50 124"/>
-      <g class="flame fade-late"><path d="M40 43 C33 34 35 24 40 14 C45 24 47 34 40 43Z" fill="rgba(207,166,163,.28)" stroke="#CFA6A3" stroke-width="1"/><path d="M40 40 C37 35 38 30 40 26 C42 30 43 35 40 40Z" fill="none" stroke="#CFA6A3" stroke-width=".8"/></g>
-    </svg>
+    <img src="assets/illustrations/dress-code.png" alt="Dress Code" style="width:min(50vw,200px);height:auto;margin:6px 0 10px;object-fit:contain">
     <p class="dress">Wear any color that makes you feel beautiful. Ladies, we kindly ask you to leave white for the bride, and black for another night.</p>
     <div class="dots" aria-hidden="true">
       <div class="dot bk"><svg viewBox="0 0 62 62"><path class="ln r" pathLength="1" style="stroke-width:1.6" d="M2 56 C18 40 40 22 60 6"/></svg></div>
@@ -585,7 +580,7 @@ button.pill{font-family:var(--serif)}
   <!-- closing -->
   <footer class="sec s-close reveal">
     <div class="dotdiv" aria-hidden="true"></div>
-    <svg class="rings-s draw" viewBox="0 0 74 44" aria-hidden="true"><circle class="ln r" pathLength="1" cx="26" cy="22" r="16"/><circle class="ln r" pathLength="1" cx="48" cy="22" r="16"/></svg>
+    <img src="assets/illustrations/wedding-couple.png" alt="Mohamed & Mariam" style="width:min(60vw,240px);height:auto;margin-bottom:26px;object-fit:contain">
     <p class="wl">With love,</p>
     <div class="sig script" id="sig"><span class="wr" style="--wd:3.2s;--wdelay:.3s">Mohamed &amp; Mariam</span><i class="pen"></i></div>
     <p class="fin">02 · 07 · 2027</p>
