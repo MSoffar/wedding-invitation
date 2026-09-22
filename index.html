@@ -65,14 +65,14 @@ button{font:inherit;color:inherit;background:none;border:0;cursor:pointer}
 #env-stage{background:var(--ivory);opacity:0;visibility:hidden;transition:opacity 1.6s ease,visibility 0s linear 1.6s;overflow:hidden}
 #env-stage.show{opacity:1;visibility:visible;transition-delay:0s}
 #env-stage.out{opacity:0;visibility:visible;pointer-events:none;transition:opacity 2s ease}
-.env-couple-left,.env-couple-right{position:absolute;width:min(25vw,120px);height:auto;transition:all 1.5s var(--ease);opacity:0}
-.env-couple-left{left:8%;bottom:15%;transform:translateX(-20px)}
-.env-couple-right{right:8%;bottom:15%;transform:translateX(20px)}
+.env-couple-left,.env-couple-right{position:absolute;width:min(30vw,140px);height:auto;transition:all 1.2s cubic-bezier(0.4, 0, 0.2, 1);opacity:0}
+.env-couple-left{left:15%;bottom:18%;transform:translateX(-10px)}
+.env-couple-right{right:15%;bottom:18%;transform:translateX(10px)}
 #env-stage.show .env-couple-left,#env-stage.show .env-couple-right{opacity:1;transform:translateX(0)}
-.env.opening .env-couple-left{animation:slideToCenter 1.5s var(--ease) .8s forwards}
-.env.opening .env-couple-right{animation:slideToCenterRight 1.5s var(--ease) .8s forwards}
-@keyframes slideToCenter{to{left:25%;transform:translateX(0) rotate(-3deg) scale(1.1)}}
-@keyframes slideToCenterRight{to{right:25%;transform:translateX(0) rotate(3deg) scale(1.1)}}
+.env.opening .env-couple-left{animation:slideIn 1.2s cubic-bezier(0.4, 0, 0.2, 1) .5s forwards}
+.env.opening .env-couple-right{animation:slideInRight 1.2s cubic-bezier(0.4, 0, 0.2, 1) .5s forwards}
+@keyframes slideIn{to{left:30%;transform:scale(1.05)}}
+@keyframes slideInRight{to{right:30%;transform:scale(1.05)}}
 .env-deco{position:absolute;pointer-events:none;opacity:0;transition:opacity 3s ease 1s}
 #env-stage.show .env-deco{opacity:.9}
 .env-deco svg{display:block;width:100%;height:auto;transform-origin:0 0;animation:sway 11s ease-in-out infinite}
@@ -799,17 +799,17 @@ function openEnv(){
   Snd.unlock(); Snd.startMusic();
   env.classList.add('opening'); $('#hint').classList.add('gone');
   
-  // Switch images to "looking forward"
+  // Switch images to "looking forward" - smoother timing
   setTimeout(()=>{
     groomImg.src='assets/illustrations/groom-after-opening-envelope.png';
     brideImg.src='assets/illustrations/bride-after-open-envelope.png';
-  },650);
+  },400);
   
   if(RM){ setTimeout(finishOpen,300); return; }
-  setTimeout(()=>{ Snd.rustle(); env.classList.add('flap-open'); },650);
-  setTimeout(()=>env.classList.add('flap-behind'),1350);
-  setTimeout(()=>{ env.classList.add('card-up'); petals(9); },2000);
-  setTimeout(finishOpen,3900);
+  setTimeout(()=>{ Snd.rustle(); env.classList.add('flap-open'); },600);
+  setTimeout(()=>env.classList.add('flap-behind'),1200);
+  setTimeout(()=>{ env.classList.add('card-up'); petals(6); },1800);
+  setTimeout(finishOpen,3400);
 }
 env.addEventListener('click',openEnv);
 env.addEventListener('keydown',e=>{ if(e.key==='Enter'||e.key===' '){ e.preventDefault(); openEnv(); } });
@@ -824,9 +824,6 @@ function finishOpen(){
   setTimeout(()=>$('#s-names').classList.add('go'), RM?50:900);
   setTimeout(()=>{ envStage.hidden=true; }, 2300);
   sigObs.observe($('#sig'));
-  
-  // Start auto-scroll after letter opens
-  startAutoScroll();
 }
 const sigObs = new IntersectionObserver(es=>es.forEach(e=>{ if(e.isIntersecting){ const s=e.target; s.classList.add('go','pen-on'); s.querySelector('.wr').classList.add('go'); sigObs.unobserve(s); } }),{threshold:.9});
 
@@ -894,81 +891,6 @@ function tickCd(){
 }
 tickCd(); cdTimer=setInterval(tickCd,1000);
 document.addEventListener('visibilitychange',()=>{ if(!document.hidden) tickCd(); });
-
-/* ---------- auto-scroll ---------- */
-let autoScrollEnabled = true;
-let autoScrollTimeout = null;
-let isAutoScrolling = false;
-
-function disableAutoScroll() {
-  autoScrollEnabled = false;
-  if (autoScrollTimeout) {
-    clearTimeout(autoScrollTimeout);
-    autoScrollTimeout = null;
-  }
-}
-
-function smoothScrollTo(element, callback) {
-  if (!autoScrollEnabled || !element) return;
-  
-  isAutoScrolling = true;
-  
-  // Slower scroll on mobile
-  const isMobile = window.innerWidth < 768;
-  const behavior = isMobile ? 'smooth' : 'smooth';
-  
-  element.scrollIntoView({ behavior, block: 'center' });
-  
-  // Wait longer for scroll to complete on mobile
-  setTimeout(() => {
-    isAutoScrolling = false;
-    if (callback) callback();
-  }, isMobile ? 2000 : 1500);
-}
-
-function startAutoScroll() {
-  // Longer wait times, especially on mobile
-  const isMobile = window.innerWidth < 768;
-  const firstDelay = isMobile ? 6000 : 5000; // 6 sec mobile, 5 sec desktop
-  const secondDelay = isMobile ? 5000 : 4000; // 5 sec mobile, 4 sec desktop
-  
-  // Wait before first scroll to scratch
-  autoScrollTimeout = setTimeout(() => {
-    if (!autoScrollEnabled) return;
-    
-    const scratchSection = $('#scratch');
-    smoothScrollTo(scratchSection, () => {
-      // Wait at scratch, then scroll to RSVP form
-      autoScrollTimeout = setTimeout(() => {
-        if (!autoScrollEnabled) return;
-        
-        const rsvpSection = $('.s-rsvp');
-        smoothScrollTo(rsvpSection);
-      }, secondDelay);
-    });
-  }, firstDelay);
-}
-
-// Detect user scrolling to stop auto-scroll
-let scrollTimeout;
-window.addEventListener('scroll', () => {
-  // Only disable if it's user-initiated scroll, not our auto-scroll
-  if (isAutoScrolling) return;
-  
-  clearTimeout(scrollTimeout);
-  scrollTimeout = setTimeout(() => {
-    disableAutoScroll();
-  }, 150);
-}, { passive: true });
-
-// Detect user touch/wheel to stop auto-scroll immediately
-window.addEventListener('wheel', () => {
-  if (!isAutoScrolling) disableAutoScroll();
-}, { passive: true });
-
-window.addEventListener('touchstart', () => {
-  if (!isAutoScrolling) disableAutoScroll();
-}, { passive: true });
 
 /* ---------- RSVP modal ---------- */
 const modal=$('#modal'), sheet=$('#sheet'), form=$('#rsvp'), nameIn=$('#fName'), noteIn=$('#fNote'), errEl=$('#fErr'), sendBtn=$('#fSend');
