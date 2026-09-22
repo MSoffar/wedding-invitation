@@ -65,9 +65,9 @@ button{font:inherit;color:inherit;background:none;border:0;cursor:pointer}
 #env-stage{background:var(--ivory);opacity:0;visibility:hidden;transition:opacity 1.6s ease,visibility 0s linear 1.6s;overflow:hidden}
 #env-stage.show{opacity:1;visibility:visible;transition-delay:0s}
 #env-stage.out{opacity:0;visibility:visible;pointer-events:none;transition:opacity 2s ease}
-.env-couple-left,.env-couple-right{position:absolute;width:min(30vw,140px);height:auto;transition:all 1.2s cubic-bezier(0.4, 0, 0.2, 1);opacity:0}
-.env-couple-left{left:15%;bottom:18%;transform:translateX(-10px)}
-.env-couple-right{right:15%;bottom:18%;transform:translateX(10px)}
+.env-couple-left,.env-couple-right{position:absolute;width:min(35vw,160px);height:auto;transition:all 1.2s cubic-bezier(0.4, 0, 0.2, 1);opacity:0}
+.env-couple-left{left:12%;bottom:22%;transform:translateX(-10px)}
+.env-couple-right{right:12%;bottom:22%;transform:translateX(10px)}
 #env-stage.show .env-couple-left,#env-stage.show .env-couple-right{opacity:1;transform:translateX(0)}
 .env.opening .env-couple-left{animation:slideIn 1.2s cubic-bezier(0.4, 0, 0.2, 1) .5s forwards}
 .env.opening .env-couple-right{animation:slideInRight 1.2s cubic-bezier(0.4, 0, 0.2, 1) .5s forwards}
@@ -100,8 +100,9 @@ button{font:inherit;color:inherit;background:none;border:0;cursor:pointer}
 .env .seal svg{filter:drop-shadow(0 2px 3px rgba(91,79,74,.25))}
 .env.opening .seal{animation:sealOff 1.1s ease forwards}
 @keyframes sealOff{0%{transform:translate(-50%,-50%) scale(1)}22%{transform:translate(-50%,-50%) scale(1.1)}100%{transform:translate(-46%,70%) scale(.9) rotate(14deg);opacity:0}}
-.hint{margin-top:44px;font-style:italic;font-size:17px;letter-spacing:.24em;color:var(--ink-soft);animation:soft 3.4s ease-in-out infinite;transition:opacity .8s}
+.hint{margin-top:44px;font-style:italic;font-size:16px;letter-spacing:.24em;color:var(--ink-soft);animation:soft 3.4s ease-in-out infinite;transition:opacity .8s}
 .hint.gone{opacity:0;animation:none}
+@media (max-width:640px){.hint{font-size:14px;margin-top:38px}}
 @keyframes soft{50%{opacity:.4}}
 
 /* ---------- petals ---------- */
