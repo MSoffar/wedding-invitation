@@ -12,13 +12,13 @@
 <meta property="og:title" content="Mohamed &amp; Mariam">
 <meta property="og:description" content="2 July 2027, 6:00 PM">
 <meta property="og:type" content="website">
-<meta property="og:image" content="https://YOUR-NETLIFY-SITE.netlify.app/preview.jpg">
+<meta property="og:image" content="https://YOUR-NETLIFY-SITE.netlify.app/whatsapp.jpeg">
 <meta property="og:image:width" content="1200">
 <meta property="og:image:height" content="630">
 <meta name="twitter:card" content="summary_large_image">
 <meta name="twitter:title" content="Mohamed &amp; Mariam">
 <meta name="twitter:description" content="2 July 2027, 6:00 PM">
-<meta name="twitter:image" content="https://YOUR-NETLIFY-SITE.netlify.app/preview.jpg">
+<meta name="twitter:image" content="https://YOUR-NETLIFY-SITE.netlify.app/whatsapp.jpeg">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;1,300;1,400&family=Pinyon+Script&family=Amiri:wght@400&display=swap" media="print" onload="this.media='all'">
@@ -122,6 +122,7 @@ button{font:inherit;color:inherit;background:none;border:0;cursor:pointer}
 #letter.show{display:block;animation:letterIn 1.8s ease both}
 @keyframes letterIn{from{opacity:0}to{opacity:1}}
 .sec{position:relative;max-width:520px;margin:0 auto;padding:clamp(70px,13svh,120px) 28px;display:flex;flex-direction:column;align-items:center;text-align:center}
+@media (max-width:640px){.sec{padding:clamp(50px,10svh,80px) 28px}}
 .reveal{opacity:0;transition:opacity 1.7s ease}
 .reveal.in{opacity:1}
 .h{font-size:clamp(40px,11vw,52px);line-height:1.2;color:var(--ink);margin-bottom:6px}
@@ -276,6 +277,22 @@ button.pill{font-family:var(--serif)}
 @keyframes penMove{0%{left:0;opacity:0}6%{opacity:.85}92%{opacity:.85}100%{left:100%;opacity:0}}
 @keyframes penBob{from{margin-top:-8px}to{margin-top:6px}}
 .fin{font-size:16px;letter-spacing:.1em;color:var(--ink-soft);margin-top:4px}
+
+/* Mobile spacing adjustments */
+@media (max-width:640px){
+  .nt{margin-top:24px}
+  .s-rsvp{padding-top:40px!important}
+  .linkbtn{margin-top:20px}
+  .s-dress{padding-top:40px!important}
+  .card-s:last-child{margin-bottom:0}
+  .s-loc{padding-top:40px!important}
+  .s-count{padding-top:40px!important}
+  .s-sched{padding-top:40px!important}
+  .s-date{padding-top:40px!important}
+  .s-msg .msg{margin-top:20px}
+  .photo-wrap{margin-top:30px}
+  .s-names .couple{margin-bottom:18px}
+}
 
 @media (prefers-reduced-motion:reduce){
   *,*::before,*::after{animation-duration:.01ms!important;animation-delay:0s!important;animation-iteration-count:1!important;transition-duration:.01ms!important;transition-delay:0s!important;scroll-behavior:auto!important}
@@ -539,7 +556,6 @@ button.pill{font-family:var(--serif)}
     <h2 class="h script">Location</h2>
     <img src="assets/illustrations/raddison.png" alt="Radisson Blu" style="width:min(70vw,280px);height:auto;margin-bottom:20px;object-fit:contain">
     <p class="venue">Radisson Blu</p>
-    <p class="city">Alexandria, Egypt</p>
     <a class="linkbtn" href="https://share.google/svM3ocD2Ax9mpFEXs" target="_blank" rel="noopener">View location →</a>
   </section>
 
@@ -558,16 +574,7 @@ button.pill{font-family:var(--serif)}
   <!-- rsvp -->
   <section class="sec s-rsvp reveal">
     <h2 class="h script">RSVP</h2>
-    <svg class="champ" viewBox="-10 -34 160 196" aria-hidden="true">
-      <g transform="rotate(18 70 142)">
-        <path class="ln k" d="M64 26 V58 C64 68 50 74 50 92 V138 Q50 142 54 142 H86 Q90 142 90 138 V92 C90 74 76 68 76 58 V26"/>
-        <path class="ln k" d="M62 24 H78 V29 H62Z"/><path class="ln r" d="M64 36 H76 M64 41 H76"/>
-        <path class="ln k" d="M55 100 H85 V126 H55Z"/><use href="#fl" x="62" y="103" width="16" height="16"/>
-        <path class="ln k" d="M60 78 Q70 84 80 78" opacity=".6"/>
-        <g class="cork"><path d="M65 13 H75 V25 H65Z" fill="rgba(239,228,218,.9)" stroke="#8b7a72" stroke-width="1" stroke-linejoin="round"/><path d="M65 18 H75" stroke="#8b7a72" stroke-width=".7"/></g>
-        <circle class="bub" cx="64" cy="8" r="2.2" fill="none" stroke="#CFA6A3" stroke-width=".9"/><circle class="bub" cx="72" cy="-2" r="2.8" fill="none" stroke="#CFA6A3" stroke-width=".9"/><circle class="bub" cx="82" cy="6" r="2" fill="none" stroke="#CFA6A3" stroke-width=".9"/>
-      </g>
-    </svg>
+    <img src="assets/illustrations/wedding-day.png" alt="Wedding Day" style="width:min(50vw,200px);height:auto;margin-bottom:20px;object-fit:contain">
     <p class="rsvp-line">We’d love to celebrate with you.</p>
     <button class="pill" id="openForm" type="button">Fill the form</button>
   </section>
