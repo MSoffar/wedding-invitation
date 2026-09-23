@@ -4,7 +4,7 @@ An elegant, interactive wedding invitation website with personalized guest URLs 
 
 ## 🌐 Live Site
 - **Production**: https://mohamed-mariam.vercel.app/
-- **Personalized URLs**: Add `GuestName` to personalize (e.g., `?n=John`)
+- **Personalized URLs**: Add `?to=GuestName` to personalize (e.g., `?to=Ahmed`)
 
 ## 📁 Project Structure
 
@@ -77,8 +77,8 @@ mohamed-mariam-site/
 ### Personalized Invitations
 Add guest name to URL:
 ```
-https://mohamed-mariam.vercel.app/?n=Ahmed
-https://mohamed-mariam.vercel.app/?n=Sarah
+https://mohamed-mariam.vercel.app/?to=Ahmed
+https://mohamed-mariam.vercel.app/?to=Sarah
 ```
 
 ### Generate Links
