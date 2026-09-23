@@ -3,7 +3,7 @@
   "outputDirectory": ".",
   "rewrites": [
     {
-      "source": "/(?!assets|api)([^.]+)",
+      "source": "/((?!assets|api)([^.]+))",
       "destination": "/api/page?guest=$1"
     },
     {
