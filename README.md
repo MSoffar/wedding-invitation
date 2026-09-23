@@ -4,7 +4,7 @@ An elegant, interactive wedding invitation website with personalized guest URLs 
 
 ## 🌐 Live Site
 - **Production**: https://mohamed-mariam-wedding-six.vercel.app/
-- **Personalized URLs**: Add `?n=GuestName` to personalize (e.g., `?n=John`)
+- **Personalized URLs**: Add `GuestName` to personalize (e.g., `?n=John`)
 
 ## 📁 Project Structure
 
