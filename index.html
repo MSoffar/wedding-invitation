@@ -1030,13 +1030,62 @@ form.addEventListener('submit',async e=>{
   if(!name){ errEl.textContent='Please add your name.'; nameIn.focus(); return; }
   if(!att){ errEl.textContent='Please choose one of the two answers.'; return; }
   
+  // Check for duplicate submission
+  const storedResponse = localStorage.getItem('rsvp_' + name.toLowerCase());
+  const yes = att==='Yes, with joy';
+  const firstName = name.split(' ')[0];
+  
+  if(storedResponse) {
+    const wasYes = storedResponse === 'yes';
+    
+    // If they already said YES
+    if(wasYes && yes) {
+      sendBtn.disabled=true;
+      setTimeout(() => {
+        const done=$('#done'), msg=$('#doneMsg');
+        msg.textContent = `We're already waiting for you, ${firstName}! See you there.`;
+        done.className='done yes show'; $('#waxSvg').style.display='';
+        $('#paneForm').hidden=true; $('#paneDone').hidden=false; sheet.scrollTop=0;
+        setTimeout(()=>Snd.thud(),RM?0:700); petals(6);
+      }, 800);
+      return;
+    }
+    
+    // If they already said NO
+    if(!wasYes && !yes) {
+      sendBtn.disabled=true;
+      setTimeout(() => {
+        const done=$('#done'), msg=$('#doneMsg');
+        msg.textContent = `We already know you can't make it, ${firstName}. We wish things were different.`;
+        done.className='done no show'; $('#waxSvg').style.display='none';
+        $('#paneForm').hidden=true; $('#paneDone').hidden=false; sheet.scrollTop=0;
+      }, 800);
+      return;
+    }
+    
+    // If they're changing from NO to YES
+    if(!wasYes && yes) {
+      // Allow the update - will store new response below
+      console.log('[RSVP] Guest changed from No to Yes:', name);
+    }
+  }
+  
   sendBtn.disabled=true;
+  
+  // Store the response in localStorage
+  localStorage.setItem('rsvp_' + name.toLowerCase(), yes ? 'yes' : 'no');
   
   // Show success message after 0.8 second delay
   setTimeout(() => {
-    const yes = att==='Yes, with joy', done=$('#done'), msg=$('#doneMsg');
-    const firstName = name.split(' ')[0]; // Extract first name only
-    msg.textContent = yes ? `See you there, ${firstName}. You just made our day.` : `We wish you were here, ${firstName}. Thank you for letting us know`;
+    const done=$('#done'), msg=$('#doneMsg');
+    const changedMind = storedResponse && storedResponse !== (yes ? 'yes' : 'no');
+    
+    if(changedMind && yes) {
+      msg.textContent = `That's wonderful, ${firstName}! We're so happy you changed your mind. See you there!`;
+    } else {
+      msg.textContent = yes ? `See you there, ${firstName}. You just made our day.` : `We wish you were here, ${firstName}. Thank you for letting us know`;
+    }
+    
     done.className='done '+(yes?'yes show':'no'); $('#waxSvg').style.display=yes?'':'none';
     $('#paneForm').hidden=true; $('#paneDone').hidden=false; sheet.scrollTop=0;
     
