@@ -3,7 +3,7 @@
 An elegant, interactive wedding invitation website with personalized guest URLs and RSVP functionality.
 
 ## 🌐 Live Site
-- **Production**: https://mohamed-mariam-wedding-six.vercel.app/
+- **Production**: https://mohamed-mariam.vercel.app/
 - **Personalized URLs**: Add `GuestName` to personalize (e.g., `?n=John`)
 
 ## 📁 Project Structure
@@ -77,8 +77,8 @@ mohamed-mariam-site/
 ### Personalized Invitations
 Add guest name to URL:
 ```
-https://mohamed-mariam-wedding-six.vercel.app/?n=Ahmed
-https://mohamed-mariam-wedding-six.vercel.app/?n=Sarah
+https://mohamed-mariam.vercel.app/?n=Ahmed
+https://mohamed-mariam.vercel.app/?n=Sarah
 ```
 
 ### Generate Links

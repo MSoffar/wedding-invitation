@@ -4,7 +4,7 @@
 # Generates personalized links and WhatsApp messages for guests
 
 # CHANGE THIS TO YOUR ACTUAL WEBSITE URL
-WEBSITE_URL="https://mohamed-mariam-wedding-six.vercel.app"
+WEBSITE_URL="https://mohamed-mariam.vercel.app"
 
 # Country code for all guests (Egypt)
 COUNTRY_CODE="20"

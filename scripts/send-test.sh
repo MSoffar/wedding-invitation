@@ -2,7 +2,7 @@
 
 # Test invitation sender
 
-WEBSITE_URL="https://mohamed-mariam-wedding-six.vercel.app"
+WEBSITE_URL="https://mohamed-mariam.vercel.app"
 COUNTRY_CODE="20"
 GUEST_LIST="guest-list-test.txt"
 
