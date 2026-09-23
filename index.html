@@ -878,6 +878,7 @@ document.addEventListener('visibilitychange', () => {
   const bgMusic = document.getElementById('bgMusic');
   if(bgMusic && !bgMusic.paused && document.hidden) {
     bgMusic.pause();
+    bgMusic.currentTime = 0; // Reset to start
     bgMusic.dataset.wasPlaying = 'true';
   } else if(bgMusic && bgMusic.dataset.wasPlaying === 'true' && !document.hidden && !Snd.muted) {
     bgMusic.play().catch(()=>{});
@@ -885,10 +886,24 @@ document.addEventListener('visibilitychange', () => {
   }
 });
 
-// Stop music when page is unloaded
+// Stop music completely when page is unloaded
 window.addEventListener('pagehide', () => {
   const bgMusic = document.getElementById('bgMusic');
-  if(bgMusic) bgMusic.pause();
+  if(bgMusic) {
+    bgMusic.pause();
+    bgMusic.currentTime = 0; // Reset to start
+    bgMusic.src = ''; // Clear source to fully stop
+  }
+});
+
+// Also stop on beforeunload
+window.addEventListener('beforeunload', () => {
+  const bgMusic = document.getElementById('bgMusic');
+  if(bgMusic) {
+    bgMusic.pause();
+    bgMusic.currentTime = 0;
+    bgMusic.src = '';
+  }
 });
 
 document.addEventListener('pointerdown',e=>{ if(e.target.closest&&e.target.closest('button:not(#sound),a.linkbtn,label.opt')) Snd.tap(); },{passive:true});
