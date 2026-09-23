@@ -190,19 +190,26 @@ button{font:inherit;color:inherit;background:none;border:0;cursor:pointer}
 #cover{position:absolute;inset:0;width:100%;height:100%;touch-action:none;-webkit-touch-callout:none;-webkit-user-select:none;user-select:none;transition:opacity 1.5s ease;cursor:grab}
 .scratch.done #cover{opacity:0;pointer-events:none}
 .scratch-hand{position:absolute;width:60px;height:60px;pointer-events:none;z-index:10;opacity:0;display:none;filter:drop-shadow(2px 2px 4px rgba(0,0,0,.2))}
-.scratch-hand.show{display:block;animation:handScratch 2.2s ease-in-out forwards}
-@keyframes handScratch{
-  0%{opacity:0;left:20%;top:25%;transform:rotate(-25deg) scale(1)}
-  10%{opacity:1;left:22%;top:27%;transform:rotate(-20deg) scale(1.05)}
-  20%{opacity:1;left:25%;top:30%;transform:rotate(-15deg) scale(1.05)}
-  30%{opacity:1;left:28%;top:33%;transform:rotate(-10deg) scale(1.05)}
-  40%{opacity:1;left:31%;top:36%;transform:rotate(-5deg) scale(1.05)}
-  50%{opacity:1;left:34%;top:39%;transform:rotate(0deg) scale(1.05)}
-  60%{opacity:1;left:37%;top:42%;transform:rotate(5deg) scale(1.05)}
-  70%{opacity:1;left:40%;top:45%;transform:rotate(10deg) scale(1.05)}
-  80%{opacity:1;left:43%;top:48%;transform:rotate(15deg) scale(1.05)}
-  90%{opacity:0.7;left:45%;top:50%;transform:rotate(20deg) scale(1)}
-  100%{opacity:0;left:47%;top:52%;transform:rotate(25deg) scale(0.9)}
+.scratch-hand.show{display:block;animation:handScratchRealistic 1.5s ease-in-out forwards}
+@keyframes handScratchRealistic{
+  0%{opacity:0;left:25%;top:48%;transform:rotate(-65deg) scale(1)}
+  5%{opacity:1;left:25%;top:48%;transform:rotate(-65deg) scale(1.05)}
+  /* First stroke - UP 45 degrees (bottom-left to top-right) */
+  15%{left:32%;top:41%;transform:rotate(-55deg) scale(1.05)}
+  /* Back stroke - DOWN 225 degrees */
+  25%{left:27%;top:46%;transform:rotate(-60deg) scale(1.05)}
+  /* Second stroke - UP 45 degrees */
+  35%{left:34%;top:39%;transform:rotate(-50deg) scale(1.05)}
+  /* Back stroke - DOWN */
+  45%{left:29%;top:44%;transform:rotate(-55deg) scale(1.05)}
+  /* Third stroke - UP 45 degrees */
+  55%{left:36%;top:37%;transform:rotate(-45deg) scale(1.05)}
+  /* Back stroke - DOWN */
+  65%{left:31%;top:42%;transform:rotate(-50deg) scale(1.05)}
+  /* Final stroke - UP 45 degrees */
+  75%{left:38%;top:35%;transform:rotate(-40deg) scale(1.05)}
+  85%{left:38%;top:35%;transform:rotate(-35deg) scale(1)}
+  100%{opacity:0;left:38%;top:35%;transform:rotate(-30deg) scale(0.9)}
 }
 
 /* countdown */
@@ -925,7 +932,7 @@ function initScratch(){
           if(hand && !started){
             hand.classList.add('show');
             // Scratch EXACTLY where hand moves - synchronized
-            setTimeout(() => autoScratch(), 220);
+            setTimeout(() => autoScratch(), 75);
           }
         }, 600);
       }
@@ -937,41 +944,51 @@ function initScratch(){
   
   function autoScratch(){
     if(started) return;
-    ctx.globalCompositeOperation='destination-out'; ctx.lineWidth=45; ctx.lineCap='round'; ctx.lineJoin='round';
+    ctx.globalCompositeOperation='destination-out'; ctx.lineWidth=50; ctx.lineCap='round'; ctx.lineJoin='round';
     
-    // Exact path matching hand movement (% of canvas size)
-    const handPath = [
-      {x: 0.22, y: 0.27}, // 10% into animation
-      {x: 0.25, y: 0.30}, // 20%
-      {x: 0.28, y: 0.33}, // 30%
-      {x: 0.31, y: 0.36}, // 40%
-      {x: 0.34, y: 0.39}, // 50%
-      {x: 0.37, y: 0.42}, // 60%
-      {x: 0.40, y: 0.45}, // 70%
-      {x: 0.43, y: 0.48}, // 80%
-      {x: 0.45, y: 0.50}  // 90%
+    // Realistic back-and-forth scratching at 45° angle
+    // Starting BOTTOM-LEFT going UP-RIGHT (↗), then back DOWN-LEFT (↙)
+    const scratchPasses = [
+      // Pass 1: UP-RIGHT (45 degrees)
+      [{x: 0.25, y: 0.48}, {x: 0.32, y: 0.41}],
+      // Pass 1: back DOWN-LEFT (225 degrees)
+      [{x: 0.32, y: 0.41}, {x: 0.27, y: 0.46}],
+      // Pass 2: UP-RIGHT (slightly offset)
+      [{x: 0.27, y: 0.46}, {x: 0.34, y: 0.39}],
+      // Pass 2: back DOWN-LEFT
+      [{x: 0.34, y: 0.39}, {x: 0.29, y: 0.44}],
+      // Pass 3: UP-RIGHT
+      [{x: 0.29, y: 0.44}, {x: 0.36, y: 0.37}],
+      // Pass 3: back DOWN-LEFT
+      [{x: 0.36, y: 0.37}, {x: 0.31, y: 0.42}],
+      // Pass 4: final UP-RIGHT
+      [{x: 0.31, y: 0.42}, {x: 0.38, y: 0.35}]
     ];
     
     let i = 0;
-    const drawStep = () => {
-      if(i >= handPath.length - 1 || started) return;
-      const p1 = handPath[i];
-      const p2 = handPath[i + 1];
+    const drawPass = () => {
+      if(i >= scratchPasses.length || started) return;
+      const pass = scratchPasses[i];
+      const p1 = pass[0];
+      const p2 = pass[1];
+      
+      // Draw the scratch line
       ctx.beginPath();
       ctx.moveTo(p1.x * w, p1.y * h);
       ctx.lineTo(p2.x * w, p2.y * h);
       ctx.stroke();
+      
       i++;
-      if(i < handPath.length - 1) setTimeout(drawStep, 220); // Matches animation timing (2200ms / 10 steps)
+      if(i < scratchPasses.length) setTimeout(drawPass, 150); // Quick back-and-forth (150ms per pass)
     };
-    drawStep();
+    drawPass();
   }
   
   const pos=e=>{ const r=cv.getBoundingClientRect(); return [(e.clientX-r.left)*(w/r.width),(e.clientY-r.top)*(h/r.height)]; };
   function check(){
     const W=cv.width,H=cv.height, d=ctx.getImageData(0,0,W,H).data, step=6; let clear=0,total=0;
     for(let y=0;y<H;y+=step) for(let x=0;x<W;x+=step){ total++; if(d[(y*W+x)*4+3]<40) clear++; }
-    if(clear/total>=.35) complete(); // Changed from .6 to .35 (35%)
+    if(clear/total>=.25) complete(); // Reveal at 25% scratched
   }
   function complete(){
     if(done) return; done=true; box.classList.add('done'); Snd.chime(); petals(8);
