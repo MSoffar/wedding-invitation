@@ -656,7 +656,7 @@ button.pill{font-family:var(--serif)}
     </div>
     <div id="paneDone" hidden>
       <div class="done" id="done">
-        <svg class="wax" viewBox="0 0 60 60" aria-hidden="true" id="waxSvg"><use href="#seal"/></svg>
+        <img src="assets/illustrations/disco.png" alt="disco ball" class="wax" id="waxSvg" style="width:120px;height:120px;object-fit:contain;">
         <p class="say" id="doneMsg" dir="auto"></p>
         <button class="closeq" id="closeQ" type="button">close</button>
       </div>
@@ -1033,7 +1033,7 @@ form.addEventListener('submit',async e=>{
   // Immediately show success message (before disabling button or any other operations)
   const yes = att==='Yes, with joy', done=$('#done'), msg=$('#doneMsg');
   const firstName = name.split(' ')[0]; // Extract first name only
-  msg.innerHTML = yes ? `See you there, ${firstName}. You just made our day. <img src="assets/illustrations/disco.png" alt="disco" style="width:28px;height:28px;display:inline-block;vertical-align:middle;margin-left:4px;">` : `We wish you were here, ${firstName}. Thank you for letting us know`;
+  msg.textContent = yes ? `See you there, ${firstName}. You just made our day.` : `We wish you were here, ${firstName}. Thank you for letting us know`;
   done.className='done '+(yes?'yes show':'no'); $('#waxSvg').style.display=yes?'':'none';
   $('#paneForm').hidden=true; $('#paneDone').hidden=false; sheet.scrollTop=0;
   
