@@ -1,6 +1,10 @@
 {
   "rewrites": [
     {
+      "source": "/(?!assets|api)([^.]+)",
+      "destination": "/api/page?guest=$1"
+    },
+    {
       "source": "/(.*)",
       "destination": "/index.html"
     }

@@ -26,7 +26,7 @@ while IFS=, read -r name phone; do
     phone="+${COUNTRY_CODE}${phone}"
     
     encoded_name=$(echo "$name" | sed 's/ /-/g')
-    invitation_link="${WEBSITE_URL}/?to=${encoded_name}"
+    invitation_link="${WEBSITE_URL}/${encoded_name}"
     
     # Just the link, no message
     message="${invitation_link}"
