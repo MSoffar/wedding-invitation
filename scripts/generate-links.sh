@@ -68,8 +68,8 @@ while IFS=, read -r name phone; do
     # URL encode name (replace spaces with +)
     encoded_name=$(echo "$name" | sed 's/ /+/g')
     
-    # Generate personalized link
-    invitation_link="${WEBSITE_URL}/?to=${encoded_name}"
+    # Generate personalized link (clean URL format)
+    invitation_link="${WEBSITE_URL}/${encoded_name}"
     
     # Generate WhatsApp message
     message="Dear ${name},%0A%0AWe would love to have you celebrate our special day with us!%0A%0A${invitation_link}%0A%0AMohamed & Mariam"

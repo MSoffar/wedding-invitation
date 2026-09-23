@@ -659,9 +659,19 @@ html.classList.add('locked');
 /* ---------- guest name ---------- */
 function getGuest(){
   let raw = '';
-  try{ raw = new URLSearchParams(location.search).get('to') || ''; }catch(e){}
+  // Try path first (e.g., /Ahmed or /Ahmed%20Ali)
+  const pathParts = location.pathname.split('/').filter(p => p.length > 0);
+  if(pathParts.length > 0){
+    raw = pathParts[0];
+  } else {
+    // Fallback to query parameters: ?n=Name or ?to=Name
+    try{ 
+      const params = new URLSearchParams(location.search);
+      raw = params.get('n') || params.get('to') || '';
+    }catch(e){}
+  }
   if(/%[0-9a-f]{2}/i.test(raw)){ try{ raw = decodeURIComponent(raw); }catch(e){} }
-  raw = raw.replace(/[\u0000-\u001f\u007f<>]/g,' ').replace(/-+/g,' ').replace(/\s+/g,' ').trim().slice(0,40);
+  raw = raw.replace(/[\u0000-\u001f\u007f<>]/g,' ').replace(/\+/g,' ').replace(/-+/g,' ').replace(/\s+/g,' ').trim().slice(0,40);
   return raw.split(' ').map(w=>{
     if(!w) return w;
     const chars = Array.from(w), lower = w.toLocaleLowerCase(), upper = w.toLocaleUpperCase();
