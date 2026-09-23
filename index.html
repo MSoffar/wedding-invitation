@@ -872,6 +872,25 @@ sndBtn.addEventListener('click',()=>{
     if(m){ bgMusic.pause(); } else { bgMusic.play().catch(()=>{}); }
   }
 });
+
+// Pause music when page is hidden (tab switch, minimize, close)
+document.addEventListener('visibilitychange', () => {
+  const bgMusic = document.getElementById('bgMusic');
+  if(bgMusic && !bgMusic.paused && document.hidden) {
+    bgMusic.pause();
+    bgMusic.dataset.wasPlaying = 'true';
+  } else if(bgMusic && bgMusic.dataset.wasPlaying === 'true' && !document.hidden && !Snd.muted) {
+    bgMusic.play().catch(()=>{});
+    delete bgMusic.dataset.wasPlaying;
+  }
+});
+
+// Stop music when page is unloaded
+window.addEventListener('pagehide', () => {
+  const bgMusic = document.getElementById('bgMusic');
+  if(bgMusic) bgMusic.pause();
+});
+
 document.addEventListener('pointerdown',e=>{ if(e.target.closest&&e.target.closest('button:not(#sound),a.linkbtn,label.opt')) Snd.tap(); },{passive:true});
 document.addEventListener('visibilitychange',()=>{ document.hidden ? Snd.suspend() : Snd.resume(); });
 window.addEventListener('pagehide',Snd.suspend);
