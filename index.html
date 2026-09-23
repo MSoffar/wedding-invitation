@@ -189,6 +189,17 @@ button{font:inherit;color:inherit;background:none;border:0;cursor:pointer}
 .tline{font-size:20px;letter-spacing:.2em;color:var(--ink-soft);margin-top:0;font-weight:500}
 #cover{position:absolute;inset:0;width:100%;height:100%;touch-action:none;-webkit-touch-callout:none;-webkit-user-select:none;user-select:none;transition:opacity 1.5s ease;cursor:grab}
 .scratch.done #cover{opacity:0;pointer-events:none}
+.scratch-hand{position:absolute;width:80px;height:80px;font-size:50px;pointer-events:none;z-index:10;opacity:0;display:none}
+.scratch-hand.show{display:block;animation:handScratch 2s ease-in-out forwards}
+@keyframes handScratch{
+  0%{opacity:0;transform:translate(-20px,-20px) rotate(-15deg)}
+  15%{opacity:1;transform:translate(0,0) rotate(-10deg)}
+  25%,35%{transform:translate(15px,8px) rotate(-5deg)}
+  45%,55%{transform:translate(30px,16px) rotate(0deg)}
+  65%,75%{transform:translate(45px,24px) rotate(5deg)}
+  85%{transform:translate(60px,32px) rotate(10deg);opacity:1}
+  100%{transform:translate(80px,40px) rotate(15deg);opacity:0}
+}
 
 /* countdown */
 .cd{display:grid;grid-template-columns:repeat(4,1fr);width:min(90vw,380px);margin-top:4px}
@@ -198,14 +209,14 @@ button{font:inherit;color:inherit;background:none;border:0;cursor:pointer}
 .u .lbl{margin-top:6px;font-size:9.5px;letter-spacing:.28em;padding-left:.28em}
 .cd-done{font-size:26px;font-style:italic;max-width:16em}
 .cd-sp{width:56px;height:auto;margin-bottom:28px}
-.s-count img{animation:hourglassShake 4s ease-in-out infinite}
+.s-count img{animation:hourglassShake 2.5s ease-in-out infinite}
 @keyframes hourglassShake{
   0%,100%{transform:rotate(0deg) translateY(0)}
-  2%{transform:rotate(-3deg) translateY(-2px)}
-  4%{transform:rotate(3deg) translateY(-1px)}
-  6%{transform:rotate(-2deg) translateY(-2px)}
-  8%{transform:rotate(2deg) translateY(-1px)}
-  10%,90%{transform:rotate(0deg) translateY(0)}
+  3%{transform:rotate(-3deg) translateY(-2px)}
+  6%{transform:rotate(3deg) translateY(-1px)}
+  9%{transform:rotate(-2deg) translateY(-2px)}
+  12%{transform:rotate(2deg) translateY(-1px)}
+  16%,84%{transform:rotate(0deg) translateY(0)}
 }
 
 /* schedule */
@@ -526,6 +537,7 @@ button.pill{font-family:var(--serif)}
         <p class="tline">6:00 PM</p>
       </div>
       <canvas id="cover" role="img" aria-label="Scratch to reveal the date" tabindex="0"></canvas>
+      <div class="scratch-hand" id="scratchHand">👆</div>
     </div>
   </section>
 
@@ -874,7 +886,7 @@ function initScratch(){
   const dpr=Math.min(window.devicePixelRatio||1,2), w=box.clientWidth, h=box.clientHeight;
   cv.width=Math.round(w*dpr); cv.height=Math.round(h*dpr);
   const ctx=cv.getContext('2d',{willReadFrequently:true}); ctx.scale(dpr,dpr);
-  let started=false, done=false, down=false, lx=0, ly=0, lastCheck=0, lastVib=0;
+  let started=false, done=false, down=false, lx=0, ly=0, lastCheck=0, lastVib=0, autoScratched=false;
   function rr(x,y,ww,hh,r){ ctx.beginPath(); ctx.moveTo(x+r,y); ctx.arcTo(x+ww,y,x+ww,y+hh,r); ctx.arcTo(x+ww,y+hh,x,y+hh,r); ctx.arcTo(x,y+hh,x,y,r); ctx.arcTo(x,y,x+ww,y,r); ctx.closePath(); }
   function paint(){
     ctx.globalCompositeOperation='source-over'; ctx.clearRect(0,0,w,h);
@@ -889,18 +901,38 @@ function initScratch(){
   paint();
   if(document.fonts&&document.fonts.load) document.fonts.load('36px "Pinyon Script"').then(()=>{ if(!started) paint(); });
   
-  // Auto-scratch animation (10% of area)
+  // Auto-scratch with hand animation when section is visible
+  const scratchObserver = new IntersectionObserver((entries) => {
+    entries.forEach(entry => {
+      if(entry.isIntersecting && !autoScratched && !started){
+        autoScratched = true;
+        setTimeout(() => {
+          const hand = $('#scratchHand');
+          if(hand && !started){
+            hand.classList.add('show');
+            // Scratch along the hand path
+            setTimeout(() => autoScratch(), 300);
+          }
+        }, 600);
+      }
+    });
+  }, { threshold: 0.5 });
+  scratchObserver.observe(box);
+  
+  function line(x1,y1,x2,y2){ ctx.globalCompositeOperation='destination-out'; ctx.lineWidth=42; ctx.lineCap='round'; ctx.lineJoin='round'; ctx.beginPath(); ctx.moveTo(x1,y1); ctx.lineTo(x2+.01,y2); ctx.stroke(); }
+  
   function autoScratch(){
+    if(started) return;
     ctx.globalCompositeOperation='destination-out'; ctx.lineWidth=42; ctx.lineCap='round'; ctx.lineJoin='round';
-    // Draw a curved scratch path like a hand movement
-    const startX = w * 0.3, startY = h * 0.4;
+    // Draw scratch path synchronized with hand movement
+    const startX = w * 0.25, startY = h * 0.35;
     const points = [
       [startX, startY],
-      [startX + 30, startY + 20],
-      [startX + 55, startY + 35],
-      [startX + 75, startY + 55],
-      [startX + 85, startY + 80],
-      [startX + 80, startY + 105]
+      [startX + 20, startY + 10],
+      [startX + 35, startY + 18],
+      [startX + 48, startY + 26],
+      [startX + 58, startY + 34],
+      [startX + 65, startY + 42]
     ];
     
     let i = 0;
@@ -911,14 +943,12 @@ function initScratch(){
       ctx.lineTo(points[i+1][0], points[i+1][1]);
       ctx.stroke();
       i++;
-      if(i < points.length - 1) setTimeout(drawStep, 80);
+      if(i < points.length - 1) setTimeout(drawStep, 200);
     };
-    setTimeout(drawStep, 800); // Start after 800ms delay
+    drawStep();
   }
-  autoScratch();
   
   const pos=e=>{ const r=cv.getBoundingClientRect(); return [(e.clientX-r.left)*(w/r.width),(e.clientY-r.top)*(h/r.height)]; };
-  function line(x1,y1,x2,y2){ ctx.globalCompositeOperation='destination-out'; ctx.lineWidth=42; ctx.lineCap='round'; ctx.lineJoin='round'; ctx.beginPath(); ctx.moveTo(x1,y1); ctx.lineTo(x2+.01,y2); ctx.stroke(); }
   function check(){
     const W=cv.width,H=cv.height, d=ctx.getImageData(0,0,W,H).data, step=6; let clear=0,total=0;
     for(let y=0;y<H;y+=step) for(let x=0;x<W;x+=step){ total++; if(d[(y*W+x)*4+3]<40) clear++; }
