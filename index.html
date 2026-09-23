@@ -1033,7 +1033,8 @@ form.addEventListener('submit',async e=>{
   
   // Show success message immediately for better UX
   const yes = att==='Yes, with joy', done=$('#done'), msg=$('#doneMsg');
-  msg.innerHTML = yes ? `See you there, ${name}. You just made our day. <img src="assets/illustrations/disco.png" alt="disco" style="width:28px;height:28px;display:inline-block;vertical-align:middle;margin-left:4px;">` : `We wish you were here, ${name}. Thank you for letting us know`;
+  const firstName = name.split(' ')[0]; // Extract first name only
+  msg.innerHTML = yes ? `See you there, ${firstName}. You just made our day. <img src="assets/illustrations/disco.png" alt="disco" style="width:28px;height:28px;display:inline-block;vertical-align:middle;margin-left:4px;">` : `We wish you were here, ${firstName}. Thank you for letting us know`;
   done.className='done '+(yes?'yes show':'no'); $('#waxSvg').style.display=yes?'':'none';
   $('#paneForm').hidden=true; $('#paneDone').hidden=false; sheet.scrollTop=0;
   if(yes){ setTimeout(()=>Snd.thud(),RM?0:700); petals(6); }
