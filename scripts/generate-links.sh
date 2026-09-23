@@ -10,9 +10,9 @@ WEBSITE_URL="https://mohamed-mariam.vercel.app"
 COUNTRY_CODE="20"
 
 # File paths
-GUEST_LIST="guest-list.txt"
-GENERATED_LINKS="generated-links.txt"
-OUTPUT_FILE="whatsapp-messages.txt"
+GUEST_LIST="../docs/guest-list-test.txt"
+GENERATED_LINKS="../docs/generated-links.txt"
+OUTPUT_FILE="../docs/whatsapp-messages.txt"
 
 # Colors for output
 GREEN='\033[0;32m'
@@ -65,8 +65,8 @@ while IFS=, read -r name phone; do
         continue
     fi
     
-    # URL encode name (replace spaces with +)
-    encoded_name=$(echo "$name" | sed 's/ /+/g')
+    # URL encode name (replace spaces with hyphens)
+    encoded_name=$(echo "$name" | sed 's/ /-/g')
     
     # Generate personalized link (query parameter format for preview support)
     invitation_link="${WEBSITE_URL}/?to=${encoded_name}"

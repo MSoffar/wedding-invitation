@@ -65,8 +65,8 @@ while IFS=, read -r name phone; do
     phone=$(echo "$phone" | sed 's/^+//' | sed 's/^0//')
     phone="+${COUNTRY_CODE}${phone}"
     
-    # URL encode name
-    encoded_name=$(echo "$name" | sed 's/ /+/g')
+    # URL encode name (replace spaces with hyphens)
+    encoded_name=$(echo "$name" | sed 's/ /-/g')
     
     # Generate personalized link (query parameter format for preview support)
     invitation_link="${WEBSITE_URL}/?to=${encoded_name}"
