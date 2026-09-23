@@ -879,12 +879,41 @@ function initScratch(){
   }
   paint();
   if(document.fonts&&document.fonts.load) document.fonts.load('36px "Pinyon Script"').then(()=>{ if(!started) paint(); });
+  
+  // Auto-scratch animation (10% of area)
+  function autoScratch(){
+    ctx.globalCompositeOperation='destination-out'; ctx.lineWidth=42; ctx.lineCap='round'; ctx.lineJoin='round';
+    // Draw a curved scratch path like a hand movement
+    const startX = w * 0.3, startY = h * 0.4;
+    const points = [
+      [startX, startY],
+      [startX + 30, startY + 20],
+      [startX + 55, startY + 35],
+      [startX + 75, startY + 55],
+      [startX + 85, startY + 80],
+      [startX + 80, startY + 105]
+    ];
+    
+    let i = 0;
+    const drawStep = () => {
+      if(i >= points.length - 1 || started) return;
+      ctx.beginPath();
+      ctx.moveTo(points[i][0], points[i][1]);
+      ctx.lineTo(points[i+1][0], points[i+1][1]);
+      ctx.stroke();
+      i++;
+      if(i < points.length - 1) setTimeout(drawStep, 80);
+    };
+    setTimeout(drawStep, 800); // Start after 800ms delay
+  }
+  autoScratch();
+  
   const pos=e=>{ const r=cv.getBoundingClientRect(); return [(e.clientX-r.left)*(w/r.width),(e.clientY-r.top)*(h/r.height)]; };
   function line(x1,y1,x2,y2){ ctx.globalCompositeOperation='destination-out'; ctx.lineWidth=42; ctx.lineCap='round'; ctx.lineJoin='round'; ctx.beginPath(); ctx.moveTo(x1,y1); ctx.lineTo(x2+.01,y2); ctx.stroke(); }
   function check(){
     const W=cv.width,H=cv.height, d=ctx.getImageData(0,0,W,H).data, step=6; let clear=0,total=0;
     for(let y=0;y<H;y+=step) for(let x=0;x<W;x+=step){ total++; if(d[(y*W+x)*4+3]<40) clear++; }
-    if(clear/total>=.6) complete();
+    if(clear/total>=.35) complete(); // Changed from .6 to .35 (35%)
   }
   function complete(){
     if(done) return; done=true; box.classList.add('done'); Snd.chime(); petals(8);
