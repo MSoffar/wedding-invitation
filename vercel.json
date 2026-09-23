@@ -3,12 +3,8 @@
   "outputDirectory": ".",
   "rewrites": [
     {
-      "source": "/((?!assets|api)([^.]+))",
-      "destination": "/api/page?guest=$1"
-    },
-    {
-      "source": "/(.*)",
-      "destination": "/index.html"
+      "source": "/:path((?!assets|api).*)",
+      "destination": "/api/page?guest=:path"
     }
   ]
 }
