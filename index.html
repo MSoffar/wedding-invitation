@@ -1030,16 +1030,18 @@ form.addEventListener('submit',async e=>{
   if(!name){ errEl.textContent='Please add your name.'; nameIn.focus(); return; }
   if(!att){ errEl.textContent='Please choose one of the two answers.'; return; }
   
-  // Immediately show success message (before disabling button or any other operations)
-  const yes = att==='Yes, with joy', done=$('#done'), msg=$('#doneMsg');
-  const firstName = name.split(' ')[0]; // Extract first name only
-  msg.textContent = yes ? `See you there, ${firstName}. You just made our day.` : `We wish you were here, ${firstName}. Thank you for letting us know`;
-  done.className='done '+(yes?'yes show':'no'); $('#waxSvg').style.display=yes?'':'none';
-  $('#paneForm').hidden=true; $('#paneDone').hidden=false; sheet.scrollTop=0;
-  
   sendBtn.disabled=true;
   
-  if(yes){ setTimeout(()=>Snd.thud(),RM?0:700); petals(6); }
+  // Show success message after 0.8 second delay
+  setTimeout(() => {
+    const yes = att==='Yes, with joy', done=$('#done'), msg=$('#doneMsg');
+    const firstName = name.split(' ')[0]; // Extract first name only
+    msg.textContent = yes ? `See you there, ${firstName}. You just made our day.` : `We wish you were here, ${firstName}. Thank you for letting us know`;
+    done.className='done '+(yes?'yes show':'no'); $('#waxSvg').style.display=yes?'':'none';
+    $('#paneForm').hidden=true; $('#paneDone').hidden=false; sheet.scrollTop=0;
+    
+    if(yes){ setTimeout(()=>Snd.thud(),RM?0:700); petals(6); }
+  }, 800);
   
   // Send data in the background (non-blocking)
   send({name,attendance:att,note,link_name:guest,submitted_at:new Date().toISOString()})
