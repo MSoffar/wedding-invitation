@@ -1030,13 +1030,17 @@ form.addEventListener('submit',async e=>{
   if(!name){ errEl.textContent='Please add your name.'; nameIn.focus(); return; }
   if(!att){ errEl.textContent='Please choose one of the two answers.'; return; }
   sendBtn.disabled=true;
-  try{ await send({name,attendance:att,note,link_name:guest,submitted_at:new Date().toISOString()}); }
-  catch(x){ errEl.textContent='That did not go through. Please check your connection and try again.'; sendBtn.disabled=false; return; }
+  
+  // Show success message immediately for better UX
   const yes = att==='Yes, with joy', done=$('#done'), msg=$('#doneMsg');
   msg.textContent = yes ? `See you there, ${name}. You just made our day. 💃🎉` : `We wish you were here, ${name}. Thank you for letting us know`;
-  done.className='done '+(yes?'yes':'no'); $('#waxSvg').style.display=yes?'':'none';
+  done.className='done '+(yes?'yes show':'no'); $('#waxSvg').style.display=yes?'':'none';
   $('#paneForm').hidden=true; $('#paneDone').hidden=false; sheet.scrollTop=0;
-  if(yes){ setTimeout(()=>Snd.thud(),RM?0:700); setTimeout(()=>done.classList.add('show'),RM?0:1300); petals(6); }
+  if(yes){ setTimeout(()=>Snd.thud(),RM?0:700); petals(6); }
+  
+  // Send data in the background (non-blocking)
+  send({name,attendance:att,note,link_name:guest,submitted_at:new Date().toISOString()})
+    .catch(x=>console.error('[RSVP] Failed to send data:',x));
 });
 })();
 </script>
